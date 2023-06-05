@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: bewise_database
+    image: postgres:14.6
+    restart: always
+    command: -p 5555
+    expose:
+      - 5555
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./volumes/postgresql/pybin-data:/var/lib/postgresql/pybin/data
+
+
+  app:
+    container_name: bewise_localapp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "alembic upgrade head && gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --reload"
+    restart: always
+    ports:
+      - 8000:8000
+    expose:
+      - 8000
+    env_file:
+      - .env
+    depends_on:
+      - db
