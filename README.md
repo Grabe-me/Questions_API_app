@@ -32,14 +32,17 @@
 3. В терминале перейти в директорию приложения с файлом `docker-compose.yml`
    
 
+    ```
     cd path/to/project/dir   # укажите путь к директории проекта
 
 4. Используя Docker, запустить сборку и развёртывание приложения:
   - для запуска в режиме detached mode:
 
 
+    ```
     docker-compose up -d --build
   - для запуска с выводом логов:
 
 
+    ```
     docker-compose up --build
